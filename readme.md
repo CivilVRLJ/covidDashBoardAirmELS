@@ -1,4 +1,4 @@
-#Covid Dashboard
+<h1>Covid Dashboard</h1>
 
 ---
 Deze applicatie is bedoelt om inzicht te geven in de aantal besmettingen in de regio's van italië.
@@ -7,7 +7,7 @@ Daarnaast worden de besmettingen per dag vergeleken met de aantal besmettingen d
 Deze zones worden gediffineerd via <a href='https://www.thelocal.it/20210520/explained-how-has-italy-changed-the-way-it-decides-regional-covid-19-rules/'>deze link</a>
 
 ---
-##Install
+<h2>Install</h2>
 Deze applicatie is gemaakt in python (<a href='https://www.python.org/downloads/'>install python</a>) en gebruikt een paar libaries. En kunnen geïnstalleerd worden met pip.
 
 - numpy (pip install numpy)
@@ -17,7 +17,7 @@ Deze applicatie is gemaakt in python (<a href='https://www.python.org/downloads/
 - dash (pip install dash)
 
 ---
-##Run
+<h2>Run</h2>
 Run het bestand
 ```
 main.py
