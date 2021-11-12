@@ -137,3 +137,37 @@ def get_ICUdata(region_numb):
     df_ICU = pd.DataFrame({'date': ICU_update_date, 'value': ICU_update_value})
 
     return df_ICU
+
+def change_color(region_numb):
+    # color_zone = ""
+
+    df = lastupdate_data(region_numb)
+    df_total = total_data(region_numb)
+    df_medical = get_medicaldata(region_numb)
+    df_ICU = get_ICUdata(region_numb)
+
+    df_rolweek = df.resample('W', on='date').mean()
+
+    ## White zone
+    if df_rolweek['value'].iloc[-1] < 50:
+        color_zone = 'White'
+    elif df_rolweek['value'].iloc[-1] >= 50 and df_ICU['value'].iloc[-1] < 10:
+        color_zone = 'White'
+
+    ## Yellow zone
+
+    elif 50 < df_rolweek['value'].iloc[-1] <= 150 and 10 < df_ICU['value'].iloc[-1] < 20:
+        color_zone = 'Yellow'
+    elif df_rolweek['value'].iloc[-1] > 150 and 10 < df_ICU['value'].iloc[-1] < 20:
+        color_zone = 'Yellow'
+
+    ## Orange zone
+    elif df_rolweek['value'].iloc[-1] > 150 and 20 < df_ICU['value'].iloc[-1] < 30:
+        color_zone = 'Orange'
+
+    ## Red zone
+    elif df_rolweek['value'].iloc[-1] > 150 and 30 < df_ICU['value'].iloc[-1]:
+        color_zone = 'Red'
+
+
+    return color_zone

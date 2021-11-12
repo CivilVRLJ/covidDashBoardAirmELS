@@ -15,25 +15,38 @@ from dash.dependencies import Input, Output
 
 app = dash.Dash()
 region_list = get_regions()
-print(region_list)
+# print(region_list)
 
 app.layout = html.Div(id='parent', children=[
     html.H1(id='H1', children='Covid Dashboard', style={'textAlign': 'center', \
                                                                       'marginTop': 40, 'marginBottom': 40}),
     html.Div([
         html.P('The first two graphs visualize the number of cases per week (the graph on the left)'
-               ' and the total number of cases till now (the graph on the right. '),
-        html.P("The two grahps below visualize the occupation of the medical beds and the occupation of the ICU beds."
-               "Sinds august 2021 the Italian goverment will look at the occupation of the medical and ICU beds for changing colors.")
-    ], style={'margin-left': '200px', }),
+               ' and the total number of cases till now (the graph on the right). '),
+        html.P("The two grahps below visualize the occupation of the medical beds and the occupation of the ICU beds. "
+               "Since august 2021 the Italian goverment will look at the occupation of the medical and ICU beds for changing colors."
+               "The color will change based on analytical measures and the border values provided by the government."),
 
-    dcc.Dropdown(id='dropdown', style={'margin': '50px', 'width': '200px'},
-                 options=region_list,
-                 value='22'),
-    dcc.Graph(id='bar_plot', style={'margin': '50px'})
+        dcc.Dropdown(id='dropdown', style={'width': '200px'},
+                     options=region_list,
+                     value='22'),
+        dcc.Loading(
+            id="loading-1",
+            type="default",
+            children=html.Div(id="loading-output-1")
+        ),
+
+        html.P(id='zone_type', style={'textAlign': 'center'}),
+
+        dcc.Graph(id='bar_plot')
+    ], style={'margin-left': '100px', }),
+
+
 ])
 
 @app.callback(Output(component_id='bar_plot', component_property='figure'),
+              Output(component_id='zone_type', component_property='children'),
+              Output("loading-output-1", "children"),
               [Input(component_id='dropdown', component_property='value')])
 
 
@@ -44,12 +57,13 @@ def graph_update(dropdown_value):
     df_ICU = get_ICUdata(dropdown_value)
 
     title_1 = f'Cases per day.<br>' \
-              f' In the last 24 hours there were {df["value"].iloc[-1]} positive tests.<br> ' \
-              f'Last update {df["date"].iloc[-1]}'
+              f' In the last 24 hours there were {df["value"].iloc[-1]} positive tests.<br> '
 
     title_2 = f'Total cases.'
 
-    fig = make_subplots(rows=2, cols=2, subplot_titles=(title_1, title_2, 'Intake medical beds', 'ICU occupation (%)'),
+    fig = make_subplots(rows=2, cols=2, subplot_titles=(title_1, title_2,
+                                                        'Intake medical beds is not finished yet',
+                                                        'ICU occupation (%)'),
                         )
 
     # fig.add_trace(go.Scatter(x=df['date'], y=df['value'], name='test per day',\
@@ -141,41 +155,13 @@ def graph_update(dropdown_value):
                   line_width=0
                   )
 
-    # fig.add_shape(type="rect",
-    #               xref="paper", yref="paper",
-    #               x0=df_ICU['date'].iloc[0], y0=10,
-    #               x1=df_ICU['date'].iloc[-1], y1=10,
-    #               line=dict(
-    #                   color="white",
-    #                   width=3,
-    #               ),
-    #               fillcolor="white",
-    #               row=2, col=2
-    #               )
-    # fig.add_shape(type="rect",
-    #               xref="paper", yref="paper",
-    #               x0=df_ICU['date'].iloc[0], y0=,
-    #               x1=df_ICU['date'].iloc[-1], y1=10,
-    #               line=dict(
-    #                   color="white",
-    #                   width=3,
-    #               ),
-    #               fillcolor="white",
-    #               row=2, col=2
-    #               )
+    color_zone = change_color(dropdown_value)
 
-    # fig.add_trace(go.Scatter(
-    #     x=[df_ICU['date'].iloc[0], df_ICU['date'].iloc[-1], df_ICU['date'].iloc[-1], df_ICU['date'].iloc[0]],
-    #     y=[0, 0, 10, 10],  fillcolor="white"), row=2, col=2)
+    value_output = f'The color code for this region is {color_zone}. \n' \
+                    f'Last update {df["date"].iloc[-1]}'
 
-    # fig.add_hline(y=10, line_dash="dash", line_color="white", name='end white zone', row=2, col=2)
-    # fig.add_hline(y=20, line_dash="dash", line_color="yellow", name='end yellow zone', row=2, col=2)
-    # fig.add_hline(y=30, line_dash="dash", line_color="orange", name='end orange zone', row=2, col=2)
-    # fig.add_hline(y=31, line_dash="dash", line_color="red", name='start red zone', row=2, col=2)
-    # fig.add_hline(y=150, line_dash="dash", line_color="orange", name='start Orange zone')
-    # fig.add_hline(y=250, line_dash="dash", line_color="red", name='start Red zone')
-
-    return fig
+    value = ""
+    return fig, value_output, value
 
 
 if __name__ == '__main__':
