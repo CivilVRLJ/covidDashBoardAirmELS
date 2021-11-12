@@ -19,13 +19,13 @@ region_list = get_regions()
 
 app.layout = html.Div(id='parent', children=[
     html.H1(id='H1', children='Covid Dashboard', style={'textAlign': 'center', \
-                                                                      'marginTop': 40, 'marginBottom': 40}),
+                                                                      'marginTop': 40, 'marginBottom': -50}),
     html.Div([
         html.P('The first two graphs visualize the number of cases per week (the graph on the left)'
                ' and the total number of cases till now (the graph on the right). '),
         html.P("The two grahps below visualize the occupation of the medical beds and the occupation of the ICU beds. "
-               "Since august 2021 the Italian goverment will look at the occupation of the medical and ICU beds for changing colors."
-               "The color will change based on analytical measures and the border values provided by the government."),
+               "Since august 2021 the Italian goverment will look at the occupation of the medical and ICU beds for changing colors."),
+        html.P("The color will change based on analytical measures and the border values provided by the government."),
 
         dcc.Dropdown(id='dropdown', style={'width': '200px'},
                      options=region_list,
@@ -39,7 +39,7 @@ app.layout = html.Div(id='parent', children=[
         html.P(id='zone_type', style={'textAlign': 'center'}),
 
         dcc.Graph(id='bar_plot')
-    ], style={'margin-left': '100px', }),
+    ], style={'margin': '100px', }),
 
 
 ])
