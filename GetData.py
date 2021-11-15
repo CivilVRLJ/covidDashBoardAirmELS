@@ -29,7 +29,7 @@ def lastupdate_data(region_numb):
     for i in range(len(data)):
         if str(data[i]['codice_regione']) == str(region_numb):
 
-            posi_test_list_value.append(data[i]['variazione_totale_positivi'])
+            posi_test_list_value.append(data[i]['totale_positivi'])
 
             date_full = str(data[i]['data'])
             date_new = date_full.replace('T', ' ')
@@ -139,14 +139,14 @@ def get_ICUdata(region_numb):
     return df_ICU
 
 def change_color(region_numb):
-    # color_zone = ""
+    #Source: https://www.ticonsiglio.com/colori-regioni-regole-governo/
 
-    df = lastupdate_data(region_numb)
+    # df = lastupdate_data(region_numb)
     df_total = total_data(region_numb)
     df_medical = get_medicaldata(region_numb)
     df_ICU = get_ICUdata(region_numb)
 
-    df_rolweek = df.resample('W', on='date').mean()
+    df_rolweek = df_total.resample('W', on='date').mean()
 
     ## White zone
     if df_rolweek['value'].iloc[-1] < 50:

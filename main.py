@@ -56,7 +56,7 @@ def graph_update(dropdown_value):
     df_medical = get_medicaldata(dropdown_value)
     df_ICU = get_ICUdata(dropdown_value)
 
-    title_1 = f'Cases per day.<br>' \
+    title_1 = f'Cases per week.<br>' \
               f' In the last 24 hours there were {df["value"].iloc[-1]} positive tests.<br> '
 
     title_2 = f'Total cases.'
@@ -88,7 +88,7 @@ def graph_update(dropdown_value):
                       margin=dict(l=20, r=200, t=100, b=20),
                       )
 
-    fig.add_trace(go.Scatter(x=df_total['date'], y=df_total['value'], name='sum total case per day', \
+    fig.add_trace(go.Scatter(x=df_total['date'], y=df_total['value'], name='Total case per day', \
                              line=dict(color='Black', width=0.5)
                              # label={'Positive test per day'}
                              ), row=1, col=2
@@ -110,7 +110,7 @@ def graph_update(dropdown_value):
     fig['layout']['xaxis3'].update(title_text='Dates')
     fig['layout']['yaxis3'].update(title_text='total intake medical beds')
 
-    fig.add_trace(go.Scatter(x=df_ICU['date'], y=df_ICU['value'], name='df_ICU', \
+    fig.add_trace(go.Scatter(x=df_ICU['date'], y=df_ICU['value'], name='ICU occupied', \
                              line=dict(color='black', width=2)
                              # label={'Positive test per day'}
                              ), row=2, col=2
