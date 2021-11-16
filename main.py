@@ -62,8 +62,8 @@ def graph_update(dropdown_value):
     title_2 = f'Total cases.'
 
     fig = make_subplots(rows=2, cols=2, subplot_titles=(title_1, title_2,
-                                                        'Intake medical beds is not finished yet',
-                                                        'ICU occupation (%)'),
+                                                        'Medical bed occupation',
+                                                        'ICU bed occupation'),
                         )
 
     # fig.add_trace(go.Scatter(x=df['date'], y=df['value'], name='test per day',\
@@ -101,16 +101,16 @@ def graph_update(dropdown_value):
     #                   margin=dict(l=20, r=200, t=100, b=20),
     #                   )
 
-    df_medical_sum = df_medical.resample('W', on='date').sum()
-    fig.add_trace(go.Scatter(x=df_medical_sum.index, y=df_medical_sum['value'], name='df_medical', \
-                             line=dict(color='purple', width=0.5)
+    # df_medical_sum = df_medical.resample('W', on='date')
+    fig.add_trace(go.Scatter(x=df_medical['date'], y=df_medical['value'], name='Medical bed occupation', \
+                             line=dict(color='black', width=2)
                              # label={'Positive test per day'}
                              ), row=2, col=1
                   )
     fig['layout']['xaxis3'].update(title_text='Dates')
-    fig['layout']['yaxis3'].update(title_text='total intake medical beds')
+    fig['layout']['yaxis3'].update(title_text='Medical beds occupied (%)')
 
-    fig.add_trace(go.Scatter(x=df_ICU['date'], y=df_ICU['value'], name='ICU occupied', \
+    fig.add_trace(go.Scatter(x=df_ICU['date'], y=df_ICU['value'], name='ICU occupation', \
                              line=dict(color='black', width=2)
                              # label={'Positive test per day'}
                              ), row=2, col=2
@@ -118,6 +118,45 @@ def graph_update(dropdown_value):
     fig['layout']['xaxis4'].update(title_text='Dates')
     fig['layout']['yaxis4'].update(title_text='ICU occupied (%)')
 
+    # Colors Medical beds
+    fig.add_shape(type="rect",
+                  x0=df_ICU['date'].iloc[0], y0=-10,
+                  x1=df_ICU['date'].iloc[-1], y1=15,
+                  fillcolor="white",
+                  row=2, col=1,
+                  opacity=0.5,
+                  line_width=0
+                  )
+
+    fig.add_shape(type="rect",
+                  x0=df_ICU['date'].iloc[0], y0=15,
+                  x1=df_ICU['date'].iloc[-1], y1=30,
+                  fillcolor="yellow",
+                  row=2, col=1,
+                  opacity=0.5,
+                  line_width=0
+                  )
+
+    fig.add_shape(type="rect",
+                  x0=df_ICU['date'].iloc[0], y0=30,
+                  x1=df_ICU['date'].iloc[-1], y1=40,
+
+                  fillcolor="orange",
+                  row=2, col=1,
+                  opacity=0.5,
+                  line_width=0
+                  )
+
+    fig.add_shape(type="rect",
+                  x0=df_ICU['date'].iloc[0], y0=40,
+                  x1=df_ICU['date'].iloc[-1], y1=100,
+                  fillcolor="red",
+                  row=2, col=1,
+                  opacity=0.5,
+                  line_width=0
+                  )
+
+    #Colors ICU
     fig.add_shape(type="rect",
                   x0=df_ICU['date'].iloc[0], y0=-10,
                   x1=df_ICU['date'].iloc[-1], y1=10,
