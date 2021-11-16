@@ -1,10 +1,10 @@
 <h1>Covid Dashboard</h1>
 
 ---
-Deze applicatie is bedoelt om inzicht te geven in de aantal besmettingen in de regio's van italië.
+Deze applicatie is bedoeld om inzicht te geven in het aantal besmettingen in de regio's van italië.
 Per regio wordt er gekeken naar het aantal besmettingen per dag en het totale aantal besmettingen
-Daarnaast worden de besmettingen per dag vergeleken met de aantal besmettingen dat er in een zone mag gebeuren.
-Deze zones worden gediffineerd via <a href='https://www.thelocal.it/20210520/explained-how-has-italy-changed-the-way-it-decides-regional-covid-19-rules/'>deze link</a>
+Daarnaast worden de besmettingen per dag vergeleken met het aantal besmettingen dat er in een zone mag gebeuren.
+Deze zones worden bepaald via <a href='https://www.ticonsiglio.com/colori-regioni-regole-governo/'>deze link</a>
 
 ---
 <h2>Install</h2>
